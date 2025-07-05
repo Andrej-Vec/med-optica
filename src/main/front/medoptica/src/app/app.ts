@@ -4,10 +4,11 @@ import {SliderComponent} from './components/slider/slider.component';
 import {ProductsComponent} from './components/products/products.component';
 import {NewsProductComponent} from './components/news-product/news-product.component';
 import {ProductSaleComponent} from './components/product-sale/product-sale.component';
+import {FooterComponent} from './components/footer/footer.component';
 
 @Component({
   selector: 'app-root',
-  imports: [HeaderComponent, SliderComponent, ProductsComponent, NewsProductComponent, ProductSaleComponent],
+  imports: [HeaderComponent, SliderComponent, ProductsComponent, NewsProductComponent, ProductSaleComponent, FooterComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss'
 })
