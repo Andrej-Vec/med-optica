@@ -5,12 +5,14 @@ import {ProductsComponent} from './components/products/products.component';
 import {NewsProductComponent} from './components/news-product/news-product.component';
 import {ProductSaleComponent} from './components/product-sale/product-sale.component';
 import {FooterComponent} from './components/footer/footer.component';
-import {HelloService} from './services/hello.service';
+import {HelloService} from './shared/services/hello.service';
+import {LoaderComponent} from './interceptors/loader/loader.component';
 
 @Component({
   selector: 'app-root',
-  imports: [HeaderComponent, SliderComponent, ProductsComponent, NewsProductComponent, ProductSaleComponent, FooterComponent],
+  imports: [HeaderComponent, SliderComponent, ProductsComponent, NewsProductComponent, ProductSaleComponent, FooterComponent, LoaderComponent],
   templateUrl: './app.html',
+  standalone: true,
   styleUrl: './app.scss'
 })
 export class App implements OnInit {
