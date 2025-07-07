@@ -12,3 +12,27 @@
   cursor: wait;
   z-index: 9999;
 }
+
+.lds-dual-ring:after {
+  content: " ";
+  display: block;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  border-style: solid;
+  border-width: 6px;
+  position: absolute;
+  top: calc(50% - 1.58em);
+  left: calc(50% - 1.58em);
+  border-color: #007bff #007bff #007bff transparent; /* top right bottom left */
+  animation: lds-dual-ring 1.2s linear infinite;
+}
+
+@keyframes lds-dual-ring {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
