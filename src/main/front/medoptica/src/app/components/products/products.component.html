@@ -5,8 +5,10 @@
       <a href="catalog.html" class="products-block__more">Всі товари </a>
     </div>
     <div class="products-block__body">
-      @for (productCard of productCards; let idx = $index; track idx;) {
-        <app-product-card [productCard]="productCard"></app-product-card>
+      @if (allProducts$ | async; as allProducts) {
+        @for (productCard of allProducts; let idx = $index; track idx;) {
+          <app-product-card [productCard]="productCard"></app-product-card>
+        }
       }
     </div>
   </div>
