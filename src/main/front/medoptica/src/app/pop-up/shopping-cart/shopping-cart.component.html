@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Корзина</h2>
+
+<mat-dialog-content>
+  <p>В вашей корзине 3 товара.</p>
+
+  <ul>
+    <li>Товар 1 — 500 ₴</li>
+    <li>Товар 2 — 750 ₴</li>
+    <li>Товар 3 — 900 ₴</li>
+  </ul>
+
+  <p><strong>Итого: 2150 ₴</strong></p>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+  <button mat-button (click)="close()">Закрыть</button>
+  <button mat-flat-button color="primary">Оформить заказ</button>
+</mat-dialog-actions>
