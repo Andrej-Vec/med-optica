@@ -21,4 +21,5 @@ public class ProductCard {
     private String price;
     private boolean isNew;
     private boolean isBestseller;
+    private String imageUrl;
 }

@@ -10,4 +10,5 @@ export interface ProductCard {
   price?: string;
   isNew: boolean;
   isBestseller: boolean;
+  imageUrl: string;
 }

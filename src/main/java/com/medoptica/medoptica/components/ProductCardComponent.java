@@ -24,6 +24,7 @@ public class ProductCardComponent {
         p1.setPriceDifference("-100");
         p1.setNew(true);
         p1.setBestseller(false);
+        p1.setImageUrl("/product-cards/Sigvay.jpg");
 
         ProductCard p2 = new ProductCard();
         p2.setTitle("Контактні лінзи");
@@ -37,6 +38,7 @@ public class ProductCardComponent {
         p2.setPriceDifference("-150");
         p2.setNew(false);
         p2.setBestseller(true);
+        p2.setImageUrl("/product-cards/Sigvay.jpg");
 
         ProductCard p3 = new ProductCard();
         p3.setTitle("Розчин для лінз");
@@ -50,6 +52,7 @@ public class ProductCardComponent {
         p3.setPriceDifference(null);
         p3.setNew(false);
         p3.setBestseller(false);
+        p3.setImageUrl("/product-cards/Monowheels.png");
 
         ProductCard p4 = new ProductCard();
         p4.setTitle("Сонцезахисні окуляри");
@@ -63,6 +66,7 @@ public class ProductCardComponent {
         p4.setPriceDifference("-300");
         p4.setNew(true);
         p4.setBestseller(true);
+        p4.setImageUrl("/product-cards/Sigvay.jpg");
 
         products.add(p1);
         products.add(p2);
