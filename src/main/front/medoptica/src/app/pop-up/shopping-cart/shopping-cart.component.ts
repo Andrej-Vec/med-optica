@@ -1,11 +1,13 @@
 import {Component, inject} from '@angular/core';
 import {MAT_DIALOG_DATA, MatDialogActions, MatDialogContent, MatDialogRef} from '@angular/material/dialog';
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'app-modal-content',
   imports: [
     MatDialogContent,
-    MatDialogActions
+    MatDialogActions,
+    RouterLink
   ],
   templateUrl: './shopping-cart.component.html',
   styleUrl: './shopping-cart.component.scss',
