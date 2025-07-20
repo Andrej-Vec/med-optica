@@ -7,6 +7,7 @@ import {Observable} from 'rxjs';
 import {Area} from '../../../../models/area';
 import {AsyncPipe} from '@angular/common';
 import {MatFormFieldModule} from '@angular/material/form-field';
+import {MedopticaStore} from '../../../../services/medoptica.store';
 
 @Component({
   selector: 'checkout-page',
@@ -22,6 +23,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
   standalone: true
 })
 export class CheckoutComponent implements OnInit {
+  public readonly medopticaStore = inject(MedopticaStore);
   private readonly novaPoshtaService = inject(NovaPoshtaService);
 
   areas$: Observable<Area[]> | undefined;

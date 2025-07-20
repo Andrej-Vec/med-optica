@@ -1,12 +1,12 @@
 <h2 mat-dialog-title>Корзина</h2>
 
 <mat-dialog-content>
-  <p>В вашей корзине 3 товара.</p>
+  <p>В вашей корзине {{medopticaStore.selectedProductCards.length}} товара.</p>
 
   <ul>
-    <li>Товар 1 — 500 ₴</li>
-    <li>Товар 2 — 750 ₴</li>
-    <li>Товар 3 — 900 ₴</li>
+    @for (productCard of medopticaStore.selectedProductCards; let idx = $index; track idx;) {
+      <li>{{ productCard.title }} — {{productCard.priceCurrent}}</li>
+    }
   </ul>
 
   <p><strong>Итого: 2150 ₴</strong></p>

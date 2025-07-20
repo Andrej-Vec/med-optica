@@ -1,3 +1,9 @@
+<ul>
+  @for (productCard of medopticaStore.selectedProductCards; let idx = $index; track idx;) {
+    <li>{{ productCard.title }} — {{productCard.priceCurrent}}</li>
+  }
+</ul>
+
 @if (areas$ | async; as areas) {
   <mat-form-field>
     <mat-label>areas</mat-label>
