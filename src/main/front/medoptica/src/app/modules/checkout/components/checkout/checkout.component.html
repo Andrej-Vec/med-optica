@@ -1,1 +1,11 @@
-<h1>CheckoutComponent work</h1>
+@if (areas$ | async; as areas) {
+  <mat-form-field>
+    <mat-label>areas</mat-label>
+    <mat-select>
+      @for (area of areas; track area.Ref) {
+        <mat-option [value]="area.Ref">{{area.Description}}</mat-option>
+      }
+    </mat-select>
+  </mat-form-field>
+}
+
