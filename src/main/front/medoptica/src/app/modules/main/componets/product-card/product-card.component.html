@@ -30,13 +30,13 @@
         </ul>
       </div>
       <div class="actions-card__act">
-        <div (click)="addProductToCart(productCard)" class="actions-card__like _icon-like"></div>
+        <div (click)="addProductToLikes(productCard)" class="actions-card__like _icon-like"></div>
         <div class="actions-card__compare _icon-compare"></div>
       </div>
     </div>
     <div class="product-card__footer footer-card">
-      <button class="footer-card__button_white">Придбати в 1 клік</button>
-      <button class="footer-card__button_blue _icon-cart"></button>
+      <button (click)="addProductToBasket(productCard)" class="footer-card__button_white">Придбати в 1 клік</button>
+      <button (click)="addProductToBasket(productCard)" class="footer-card__button_blue _icon-cart"></button>
     </div>
   </div>
   @if (productCard?.isNew) {

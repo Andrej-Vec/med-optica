@@ -5,5 +5,6 @@ import {ProductCard} from '../models/product-card';
   providedIn: 'root'
 })
 export class MedopticaStore {
-  selectedProductCards: ProductCard[] = [];
+  selectedLikeProductCards: ProductCard[] = [];
+  selectedBasketProducts: ProductCard[] = [];
 }

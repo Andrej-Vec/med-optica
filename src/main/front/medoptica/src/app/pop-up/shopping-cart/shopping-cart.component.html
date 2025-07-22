@@ -1,10 +1,10 @@
 <h2 mat-dialog-title>Корзина</h2>
 
 <mat-dialog-content>
-  <p>В вашей корзине {{medopticaStore.selectedProductCards.length}} товара.</p>
+  <p>В вашей корзине {{medopticaStore.selectedLikeProductCards.length}} товара.</p>
 
   <ul>
-    @for (productCard of medopticaStore.selectedProductCards; let idx = $index; track idx;) {
+    @for (productCard of medopticaStore.selectedLikeProductCards; let idx = $index; track idx;) {
       <li>{{ productCard.title }} — {{productCard.priceCurrent}}</li>
     }
   </ul>

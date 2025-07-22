@@ -1,6 +1,7 @@
 import {Component, inject, Input} from '@angular/core';
 import {ProductCard} from '../../../../models/product-card';
 import {MedopticaStore} from '../../../../services/medoptica.store';
+import {Router} from '@angular/router';
 
 @Component({
   selector: 'app-product-card',
@@ -13,10 +14,18 @@ export class ProductCardComponent {
   @Input({ required: true }) productCard: ProductCard | null = null;
 
   private readonly medopticaStore = inject(MedopticaStore);
+  private readonly router = inject(Router);
 
-  public addProductToCart(productCard: ProductCard | null): void {
+  public addProductToLikes(productCard: ProductCard | null): void {
     if (productCard) {
-      this.medopticaStore.selectedProductCards.push(productCard);
+      this.medopticaStore.selectedLikeProductCards.push(productCard);
     }
+  }
+
+  public addProductToBasket(productCard: ProductCard | null): void {
+    if (productCard) {
+      this.medopticaStore.selectedBasketProducts.push(productCard);
+    }
+    this.router.navigate(['/checkout']);
   }
 }

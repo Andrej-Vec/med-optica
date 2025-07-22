@@ -12,9 +12,17 @@
       </ul>
       <div class="top-header__actions actions-top-header ">
         <button type="submit" class="actions-top-header__search search-header__button svg-header _icon-search"></button>
-        <button class="actions-top-header__like svg-header _icon-like"><span>3</span></button>
+        <button class="actions-top-header__like svg-header _icon-like">
+          @if (medopticaStore.selectedLikeProductCards.length !== 0) {
+            <span>{{ medopticaStore.selectedLikeProductCards.length }}</span>
+          }
+        </button>
         <a href="#" class="actions-top-header__compare svg-header _icon-compare"></a>
-        <button (click)="openShoppingCart()" class="actions-top-header__cart svg-header _icon-cart"><span>1</span></button>
+        <button (click)="openShoppingCart()" class="actions-top-header__cart svg-header _icon-cart">
+          @if (medopticaStore.selectedBasketProducts.length !== 0) {
+            <span>{{ medopticaStore.selectedBasketProducts.length }}</span>
+          }
+        </button>
         <!--<a href="#popup" class="actions-top-header__log-in popup-link">Войти</a>-->
       </div>
       <div class="header__hamburger-menu"><span class="menu__icon"></span></div>
@@ -48,7 +56,6 @@
           <li class="menu-header__item"><a href="#" class="menu-header__link">Сервіс та гарантія</a></li>
           <li class="menu-header__item"><a href="#" class="menu-header__link">Контакти</a></li>
           <li class="menu-header__item"><a href="#" class="menu-header__link">Блог / Статті</a></li>
-
         </ul>
       </nav>
     </div>
