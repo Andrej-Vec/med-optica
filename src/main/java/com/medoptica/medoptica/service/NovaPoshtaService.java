@@ -1,6 +1,7 @@
 package com.medoptica.medoptica.service;
 
 import com.medoptica.medoptica.models.Area;
+import com.medoptica.medoptica.models.City;
 import com.medoptica.medoptica.models.NovaPoshtaRequest;
 import com.medoptica.medoptica.models.NovaPoshtaResponse;
 import org.springframework.core.ParameterizedTypeReference;
@@ -42,4 +43,23 @@ public class NovaPoshtaService {
         return Collections.emptyList();
     }
 
+    public List<City> getCities(NovaPoshtaRequest request) {
+        HttpEntity<NovaPoshtaRequest> requestEntity = new HttpEntity<>(request, new HttpHeaders());
+
+        ResponseEntity<NovaPoshtaResponse<City>> response = restTemplate.exchange(
+                host,
+                HttpMethod.POST,
+                requestEntity,
+                new ParameterizedTypeReference<>() {
+                }
+        );
+
+        NovaPoshtaResponse<City> body = response.getBody();
+
+        if (body != null && body.isSuccess()) {
+            return body.getData();
+        }
+
+        return Collections.emptyList();
+    }
 }

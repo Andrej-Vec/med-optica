@@ -10,13 +10,13 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Area {
-    @JsonProperty("Ref")
-    private String Ref;
-    @JsonProperty("AreasCenter")
-    private String AreasCenter;
-    @JsonProperty("RegionType")
-    private String RegionType;
-    @JsonProperty("Description")
-    private String Description;
+public class MethodProperties {
+    @JsonProperty("AreaRef")
+    private String AreaRef;
+    @JsonProperty("Warehouse")
+    private String Warehouse;
+    @JsonProperty("Page")
+    private String Page;
+    @JsonProperty("limit")
+    private String limit;
 }

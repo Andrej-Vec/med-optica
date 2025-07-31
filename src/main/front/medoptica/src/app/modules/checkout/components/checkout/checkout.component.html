@@ -4,14 +4,31 @@
   }
 </ul>
 
-@if (areas$ | async; as areas) {
-  <mat-form-field>
-    <mat-label>areas</mat-label>
-    <mat-select>
-      @for (area of areas; track area.Ref) {
-        <mat-option [value]="area.Ref">{{area.Description}}</mat-option>
-      }
-    </mat-select>
-  </mat-form-field>
-}
+<form>
+  @if (areas$ | async; as areas) {
+    <mat-form-field>
+      <mat-label>areas</mat-label>
+      <mat-select (selectionChange)="onAreaChange($event.value)">
+        @for (area of areas; track area.Ref) {
+          <mat-option [value]="area.Ref">{{area.Description}}</mat-option>
+        }
+      </mat-select>
+    </mat-form-field>
+  }
+
+  @if (filteredCities$ | async; as cities) {
+    <mat-form-field class="example-full-width">
+      <mat-label>Assignee</mat-label>
+      <input type="text" [formControl]="myControl" matInput [matAutocomplete]="auto">
+      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+        @for (city of cities; track city.Ref) {
+          <mat-option [value]="city">{{city.Description}}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+  }
+</form>
+
+
+
 

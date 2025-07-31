@@ -16,7 +16,7 @@ public class NovaPoshtaResponse<T> {
     private List<T> data;
     private List<String> errors;
     private List<String> warnings;
-    private List<String> info;
+    //private List<Integer> info;
     private List<String> messageCodes;
     private List<String> errorCodes;
     private List<String> warningCodes;

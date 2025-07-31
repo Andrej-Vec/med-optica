@@ -13,4 +13,5 @@ public class NovaPoshtaRequest {
     private String apiKey;
     private String modelName;
     private String calledMethod;
+    private MethodProperties methodProperties;
 }

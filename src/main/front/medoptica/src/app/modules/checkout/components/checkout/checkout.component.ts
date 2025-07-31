@@ -1,13 +1,16 @@
 import {Component, inject, OnInit} from '@angular/core';
 import {NovaPoshtaService} from '../../../../shared/services/nova-poshta.service';
-import {NovaPoshtaRequest} from '../../../../models/nova-poshta.request';
-import {MatFormField} from '@angular/material/input';
+import {MethodProperties, NovaPoshtaRequest} from '../../../../models/nova-poshta.request';
+import {MatFormField, MatInput} from '@angular/material/input';
 import {MatOption, MatSelect} from '@angular/material/select';
-import {Observable} from 'rxjs';
+import {map, Observable, startWith} from 'rxjs';
 import {Area} from '../../../../models/area';
 import {AsyncPipe} from '@angular/common';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import {MedopticaStore} from '../../../../services/medoptica.store';
+import {City} from '../../../../models/city';
+import {MatAutocomplete, MatAutocompleteTrigger} from '@angular/material/autocomplete';
+import {FormControl, ReactiveFormsModule} from '@angular/forms';
 
 @Component({
   selector: 'checkout-page',
@@ -16,7 +19,11 @@ import {MedopticaStore} from '../../../../services/medoptica.store';
     MatSelect,
     MatOption,
     AsyncPipe,
-    MatFormFieldModule
+    MatFormFieldModule,
+    MatAutocomplete,
+    MatAutocompleteTrigger,
+    ReactiveFormsModule,
+    MatInput
   ],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',
@@ -26,9 +33,40 @@ export class CheckoutComponent implements OnInit {
   public readonly medopticaStore = inject(MedopticaStore);
   private readonly novaPoshtaService = inject(NovaPoshtaService);
 
+  myControl = new FormControl<string | City>('');
   areas$: Observable<Area[]> | undefined;
+  filteredCities$: Observable<City[]> | undefined;
+  allCities: City[] = [];
+
 
   ngOnInit() {
-    this.areas$ = this.novaPoshtaService.getAreas(new NovaPoshtaRequest("139ef94b20fa0b2f436ed7c8fed46363", "AddressGeneral", "getAreas"));
+    this.areas$ = this.novaPoshtaService.getAreas(new NovaPoshtaRequest("139ef94b20fa0b2f436ed7c8fed46363", "AddressGeneral", "getSettlementAreas", null));
+  }
+
+  displayFn(user: City): string {
+    return user && user.Description ? user.Description : '';
+  }
+
+  public onAreaChange(selectedRef: string): void {
+    this.myControl.reset();
+
+    this.novaPoshtaService.getCities(new NovaPoshtaRequest(
+      "139ef94b20fa0b2f436ed7c8fed46363",
+      "AddressGeneral",
+      "getSettlements",
+      new MethodProperties(selectedRef, "1", "2", "150")
+    )).subscribe(cities => {
+      this.allCities = cities;
+
+      this.filteredCities$ = this.myControl.valueChanges.pipe(
+        startWith(''),
+        map(value => {
+          const filterValue = typeof value === 'string' ? value.toLowerCase() : value?.Description.toLowerCase() ?? '';
+          return this.allCities.filter(city =>
+            city.Description.toLowerCase().includes(filterValue)
+          );
+        })
+      );
+    });
   }
 }

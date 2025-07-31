@@ -2,6 +2,7 @@ package com.medoptica.medoptica.contollers;
 
 import com.medoptica.medoptica.components.NovaPoshtaComponent;
 import com.medoptica.medoptica.models.Area;
+import com.medoptica.medoptica.models.City;
 import com.medoptica.medoptica.models.NovaPoshtaRequest;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -22,5 +23,10 @@ public class NovaPoshtaController {
     @PostMapping("get-areas")
     public List<Area> getAreas(@RequestBody NovaPoshtaRequest novaPoshtaRequest) {
         return novaPoshtaComponent.getAreas(novaPoshtaRequest);
+    }
+
+    @PostMapping("get-cities")
+    public List<City> getCities(@RequestBody NovaPoshtaRequest novaPoshtaRequest) {
+        return novaPoshtaComponent.getCities(novaPoshtaRequest);
     }
 }

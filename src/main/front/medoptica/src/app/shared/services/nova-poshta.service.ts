@@ -3,6 +3,7 @@ import {HttpClient} from '@angular/common/http';
 import {Observable} from 'rxjs';
 import {Area} from '../../models/area';
 import {NovaPoshtaRequest} from '../../models/nova-poshta.request';
+import {City} from '../../models/city';
 
 @Injectable({providedIn: 'root'})
 export class NovaPoshtaService {
@@ -11,5 +12,9 @@ export class NovaPoshtaService {
 
   getAreas(novaPoshtaRequest: NovaPoshtaRequest): Observable<Area[]> {
     return this.http.post<Area[]>("http://localhost:8080/api/nova-poshta/get-areas", novaPoshtaRequest)
+  }
+
+  getCities(novaPoshtaRequest: NovaPoshtaRequest): Observable<City[]> {
+    return this.http.post<City[]>("http://localhost:8080/api/nova-poshta/get-cities", novaPoshtaRequest)
   }
 }
