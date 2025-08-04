@@ -3,6 +3,7 @@ package com.medoptica.medoptica.components;
 import com.medoptica.medoptica.models.Area;
 import com.medoptica.medoptica.models.City;
 import com.medoptica.medoptica.models.NovaPoshtaRequest;
+import com.medoptica.medoptica.models.Warehouse;
 import com.medoptica.medoptica.service.NovaPoshtaCachedService;
 import com.medoptica.medoptica.service.NovaPoshtaService;
 import org.springframework.stereotype.Component;
@@ -25,5 +26,9 @@ public class NovaPoshtaComponent {
 
     public List<City> getCities(NovaPoshtaRequest request) {
         return novaPoshtaService.getCities(request);
+    }
+
+    public List<Warehouse> getWarehouses(NovaPoshtaRequest request) {
+        return novaPoshtaService.getWarehouses(request);
     }
 }

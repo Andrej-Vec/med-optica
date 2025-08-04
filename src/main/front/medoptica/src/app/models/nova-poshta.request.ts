@@ -13,15 +13,17 @@ export class NovaPoshtaRequest {
 }
 
 export class MethodProperties {
-  AreaRef: string;
-  Warehouse: string;
-  Page: string;
-  limit: string;
+  AreaRef: string | null;
+  Warehouse: string | null;
+  Page: string | null;
+  limit: string | null;
+  SettlementRef: string | null;
 
-  constructor(AreaRef: string, Warehouse: string, Page: string, limit: string) {
+  constructor(AreaRef: string | null, Warehouse: string | null, Page: string | null, limit: string | null, SettlementRef: string | null) {
     this.AreaRef = AreaRef;
     this.Warehouse = Warehouse;
     this.Page = Page;
     this.limit = limit;
+    this.SettlementRef = SettlementRef;
   }
 }

@@ -11,6 +11,7 @@ import {MedopticaStore} from '../../../../services/medoptica.store';
 import {City} from '../../../../models/city';
 import {MatAutocomplete, MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {Warehouse} from '../../../../models/warehouse';
 
 @Component({
   selector: 'checkout-page',
@@ -35,6 +36,7 @@ export class CheckoutComponent implements OnInit {
 
   myControl = new FormControl<string | City>('');
   areas$: Observable<Area[]> | undefined;
+  warehouse$: Observable<Warehouse[]> | undefined;
   filteredCities$: Observable<City[]> | undefined;
   allCities: City[] = [];
 
@@ -54,7 +56,7 @@ export class CheckoutComponent implements OnInit {
       "139ef94b20fa0b2f436ed7c8fed46363",
       "AddressGeneral",
       "getSettlements",
-      new MethodProperties(selectedRef, "1", "2", "150")
+      new MethodProperties(selectedRef, "1", "2", "150", null)
     )).subscribe(cities => {
       this.allCities = cities;
 
@@ -68,5 +70,14 @@ export class CheckoutComponent implements OnInit {
         })
       );
     });
+  }
+
+  public getWarehouses(refCity: string): void {
+    this.warehouse$ = this.novaPoshtaService.getWarehouses(new NovaPoshtaRequest(
+      "139ef94b20fa0b2f436ed7c8fed46363",
+      "AddressGeneral",
+      "getWarehouses",
+      new MethodProperties(null, null, null, null, refCity)
+    ))
   }
 }

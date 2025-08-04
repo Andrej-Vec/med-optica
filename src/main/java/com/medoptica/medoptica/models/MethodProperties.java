@@ -19,4 +19,6 @@ public class MethodProperties {
     private String Page;
     @JsonProperty("limit")
     private String limit;
+    @JsonProperty("SettlementRef")
+    private String SettlementRef;
 }

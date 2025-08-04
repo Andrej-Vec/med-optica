@@ -4,6 +4,7 @@ import com.medoptica.medoptica.components.NovaPoshtaComponent;
 import com.medoptica.medoptica.models.Area;
 import com.medoptica.medoptica.models.City;
 import com.medoptica.medoptica.models.NovaPoshtaRequest;
+import com.medoptica.medoptica.models.Warehouse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -29,4 +30,10 @@ public class NovaPoshtaController {
     public List<City> getCities(@RequestBody NovaPoshtaRequest novaPoshtaRequest) {
         return novaPoshtaComponent.getCities(novaPoshtaRequest);
     }
+
+    @PostMapping("get-warehouses")
+    public List<Warehouse> getWarehouses(@RequestBody NovaPoshtaRequest novaPoshtaRequest) {
+        return novaPoshtaComponent.getWarehouses(novaPoshtaRequest);
+    }
+
 }
