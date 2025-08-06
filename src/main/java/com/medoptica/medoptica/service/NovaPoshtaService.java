@@ -105,23 +105,48 @@ public class NovaPoshtaService {
         return copy;
     }
 
-    public List<Warehouse> getWarehouses(NovaPoshtaRequest request) {
-        HttpEntity<NovaPoshtaRequest> requestEntity = new HttpEntity<>(request, new HttpHeaders());
+    public List<Warehouse> getAllWarehouses(NovaPoshtaRequest baseRequest) {
+        int page = 1;
+        int limit = 150;
+        List<Warehouse> allWarehouses = new ArrayList<>();
 
-        ResponseEntity<NovaPoshtaResponse<com.medoptica.medoptica.models.Warehouse>> response = restTemplate.exchange(
-                host,
-                HttpMethod.POST,
-                requestEntity,
-                new ParameterizedTypeReference<>() {
-                }
-        );
+        while (true) {
+            // Клонируем запрос, чтобы не мутировать оригинал
+            NovaPoshtaRequest request = deepCopyRequest(baseRequest);
 
-        NovaPoshtaResponse<com.medoptica.medoptica.models.Warehouse> body = response.getBody();
+            MethodProperties props = request.getMethodProperties();
+            props.setPage(String.valueOf(page));
+            props.setLimit(String.valueOf(limit));
 
-        if (body != null && body.isSuccess()) {
-            return body.getData();
+            HttpEntity<NovaPoshtaRequest> requestEntity = new HttpEntity<>(request, new HttpHeaders());
+
+            ResponseEntity<NovaPoshtaResponse<Warehouse>> response = restTemplate.exchange(
+                    host,
+                    HttpMethod.POST,
+                    requestEntity,
+                    new ParameterizedTypeReference<NovaPoshtaResponse<Warehouse>>() {}
+            );
+
+            NovaPoshtaResponse<Warehouse> body = response.getBody();
+
+            if (body == null || !body.isSuccess()) {
+                break;
+            }
+
+            List<Warehouse> pageData = body.getData();
+            if (pageData != null) {
+                allWarehouses.addAll(pageData);
+            }
+
+            int totalCount = body.getInfo() != null ? body.getInfo().getTotalCount() : 0;
+            if (allWarehouses.size() >= totalCount || pageData == null || pageData.isEmpty()) {
+                break;
+            }
+
+            page++;
         }
 
-        return Collections.emptyList();
+        return allWarehouses;
     }
+
 }
