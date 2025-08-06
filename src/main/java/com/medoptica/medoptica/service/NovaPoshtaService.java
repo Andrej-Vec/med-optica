@@ -8,6 +8,7 @@ import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -23,15 +24,15 @@ public class NovaPoshtaService {
     public List<Area> getAreas(NovaPoshtaRequest request) {
         HttpEntity<NovaPoshtaRequest> requestEntity = new HttpEntity<>(request, new HttpHeaders());
 
-        ResponseEntity<NovaPoshtaResponse<Area>> response = restTemplate.exchange(
+        ResponseEntity<NovaPoshtaResponseArea<Area>> response = restTemplate.exchange(
                 host,
                 HttpMethod.POST,
                 requestEntity,
-                new ParameterizedTypeReference<NovaPoshtaResponse<Area>>() {
+                new ParameterizedTypeReference<NovaPoshtaResponseArea<Area>>() {
                 }
         );
 
-        NovaPoshtaResponse<Area> body = response.getBody();
+        NovaPoshtaResponseArea<Area> body = response.getBody();
 
         if (body != null && body.isSuccess()) {
             return body.getData();
@@ -40,24 +41,68 @@ public class NovaPoshtaService {
         return Collections.emptyList();
     }
 
-    public List<City> getCities(NovaPoshtaRequest request) {
-        HttpEntity<NovaPoshtaRequest> requestEntity = new HttpEntity<>(request, new HttpHeaders());
+    public List<City> getAllCities(NovaPoshtaRequest baseRequest) {
+        int page = 1;
+        int limit = 150;
+        List<City> allCities = new ArrayList<>();
 
-        ResponseEntity<NovaPoshtaResponse<City>> response = restTemplate.exchange(
-                host,
-                HttpMethod.POST,
-                requestEntity,
-                new ParameterizedTypeReference<>() {
-                }
-        );
+        while (true) {
+            // Клонируем request, чтобы не мутировать оригинальный
+            NovaPoshtaRequest request = deepCopyRequest(baseRequest);
 
-        NovaPoshtaResponse<City> body = response.getBody();
+            // Устанавливаем limit и текущую страницу
+            request.getMethodProperties().setLimit(String.valueOf(limit));
+            request.getMethodProperties().setPage(String.valueOf(page));
 
-        if (body != null && body.isSuccess()) {
-            return body.getData();
+            // Выполняем запрос
+            HttpEntity<NovaPoshtaRequest> requestEntity = new HttpEntity<>(request, new HttpHeaders());
+
+            ResponseEntity<NovaPoshtaResponse<City>> response = restTemplate.exchange(
+                    host,
+                    HttpMethod.POST,
+                    requestEntity,
+                    new ParameterizedTypeReference<>() {}
+            );
+
+            NovaPoshtaResponse<City> body = response.getBody();
+
+            if (body == null || !body.isSuccess()) {
+                break;
+            }
+
+            List<City> pageData = body.getData();
+            if (pageData != null) {
+                allCities.addAll(pageData);
+            }
+
+            // Проверка на окончание
+            int totalCount = body.getInfo() != null ? body.getInfo().getTotalCount() : 0;
+            if (allCities.size() >= totalCount) {
+                break;
+            }
+
+            page++; // Следующая страница
         }
 
-        return Collections.emptyList();
+        return allCities;
+    }
+
+    private NovaPoshtaRequest deepCopyRequest(NovaPoshtaRequest original) {
+        NovaPoshtaRequest copy = new NovaPoshtaRequest();
+        copy.setApiKey(original.getApiKey());
+        copy.setModelName(original.getModelName());
+        copy.setCalledMethod(original.getCalledMethod());
+
+        // Копируем methodProperties вручную
+        MethodProperties originalProps = original.getMethodProperties();
+        MethodProperties copiedProps = new MethodProperties();
+        copiedProps.setAreaRef(originalProps.getAreaRef());
+        copiedProps.setWarehouse(originalProps.getWarehouse());
+        copiedProps.setSettlementRef(originalProps.getSettlementRef());
+        // Page и limit установим отдельно в основном методе
+        copy.setMethodProperties(copiedProps);
+
+        return copy;
     }
 
     public List<Warehouse> getWarehouses(NovaPoshtaRequest request) {

@@ -11,7 +11,6 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class NovaPoshtaResponse<T> extends NovaPoshtaBaseResponse {
+public class NovaPoshtaResponseArea<T> extends NovaPoshtaBaseResponse {
     private List<T> data;
-    private NovaPoshtaInfo info;
 }

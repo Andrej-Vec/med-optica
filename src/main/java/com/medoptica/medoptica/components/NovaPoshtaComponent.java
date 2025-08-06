@@ -25,7 +25,7 @@ public class NovaPoshtaComponent {
     }
 
     public List<City> getCities(NovaPoshtaRequest request) {
-        return novaPoshtaService.getCities(request);
+        return novaPoshtaService.getAllCities(request);
     }
 
     public List<Warehouse> getWarehouses(NovaPoshtaRequest request) {
