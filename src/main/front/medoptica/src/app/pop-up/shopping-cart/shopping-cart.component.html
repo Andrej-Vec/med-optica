@@ -1,18 +1,24 @@
-<h2 mat-dialog-title>Корзина</h2>
+<h2 mat-dialog-title>Кошик</h2>
 
 <mat-dialog-content>
-  <p>В вашей корзине {{medopticaStore.selectedLikeProductCards.length}} товара.</p>
+  <p>У вашому кошику {{ medopticaStore.selectedLikeProductCards.length }} товар(ів)</p>
 
-  <ul>
+  <div class="cart-items">
     @for (productCard of medopticaStore.selectedLikeProductCards; let idx = $index; track idx;) {
-      <li>{{ productCard.title }} — {{productCard.priceCurrent}}</li>
+      <div class="cart-item">
+        <img [src]="productCard.imageUrl" alt="{{ productCard.title }}" class="product-image"/>
+        <div class="product-info">
+          <h3 class="product-title">{{ productCard.title }}</h3>
+          <p class="product-price">{{ productCard.priceCurrent }} ₴</p>
+        </div>
+      </div>
     }
-  </ul>
+  </div>
 
-  <p><strong>Итого: 2150 ₴</strong></p>
+  <p class="total"><strong>Разом: {{ total | number:'1.0-0' }} ₴</strong></p>
 </mat-dialog-content>
 
 <mat-dialog-actions align="end">
-  <button mat-button (click)="close()">Закрыть</button>
-  <button routerLink="/checkout" mat-flat-button color="primary">Оформить заказ</button>
+  <button mat-button (click)="close()">Закрити</button>
+  <button routerLink="/checkout" mat-flat-button color="primary">Оформити замовлення</button>
 </mat-dialog-actions>

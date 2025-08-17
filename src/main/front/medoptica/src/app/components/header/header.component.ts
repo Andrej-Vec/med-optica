@@ -17,7 +17,7 @@ export class HeaderComponent {
 
   public openShoppingCart(): void {
     this.dialog.open(ShoppingCartComponent, {
-      width: '300px',
+      width: '540px',
       data: { name: 'Пользователь' }
     });
   }
