@@ -1,15 +1,21 @@
 <h2 mat-dialog-title>Кошик</h2>
 
 <mat-dialog-content>
-  <p>У вашому кошику {{ medopticaStore.selectedLikeProductCards.length }} товар(ів)</p>
+  <p>У вашому кошику {{ groupedItems.length }} товар(ів)</p>
 
   <div class="cart-items">
-    @for (productCard of medopticaStore.selectedLikeProductCards; let idx = $index; track idx;) {
+    @for (groupedItem of groupedItems; track groupedItem) {
       <div class="cart-item">
-        <img [src]="productCard.imageUrl" alt="{{ productCard.title }}" class="product-image"/>
+        <img [src]="groupedItem.productCard.imageUrl" alt="{{ groupedItem.productCard.title }}" class="product-image"/>
         <div class="product-info">
-          <h3 class="product-title">{{ productCard.title }}</h3>
-          <p class="product-price">{{ productCard.priceCurrent }} ₴</p>
+          <h3 class="product-title">{{ groupedItem.productCard.title }}</h3>
+          <p class="product-price">{{ groupedItem.productCard.priceCurrent }} ₴ x {{ groupedItem.quantity }}</p>
+
+          <div class="quantity-controls">
+            <button mat-mini-button color="primary" (click)="decrease(groupedItem)">-</button>
+            <span>{{ groupedItem.quantity }}</span>
+            <button mat-mini-button color="primary" (click)="increase(groupedItem)">+</button>
+          </div>
         </div>
       </div>
     }
@@ -20,5 +26,9 @@
 
 <mat-dialog-actions align="end">
   <button mat-button (click)="close()">Закрити</button>
-  <button routerLink="/checkout" mat-flat-button color="primary">Оформити замовлення</button>
+  <button
+    [disabled]="groupedItems.length <= 0"
+    routerLink="/checkout"
+    mat-flat-button mat-dialog-close
+    color="primary">Оформити замовлення</button>
 </mat-dialog-actions>

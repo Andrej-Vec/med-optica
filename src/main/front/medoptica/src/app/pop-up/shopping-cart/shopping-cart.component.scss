@@ -51,3 +51,18 @@
   text-align: right;
   color: #111;
 }
+
+.quantity-controls {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 8px;
+
+  button {
+    min-width: 28px;
+    height: 28px;
+    line-height: 28px;
+    padding: 0;
+    font-size: 16px;
+  }
+}
