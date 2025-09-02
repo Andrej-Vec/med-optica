@@ -13,7 +13,7 @@ import {MatButton} from '@angular/material/button';
 import {DecimalPipe} from '@angular/common';
 import {ProductCard} from '../../models/product-card';
 
-interface CartItem {
+export interface CartItem {
   productCard: ProductCard;
   quantity: number;
 }

@@ -1,8 +1,38 @@
-<ul>
-  @for (productCard of medopticaStore.selectedBasketProducts; let idx = $index; track idx;) {
-    <li>{{ productCard.title }} — {{productCard.priceCurrent}}</li>
-  }
-</ul>
+<div class="cart-items">
+  <div class="cart-items-products">
+    @for (groupedItem of groupedItems; track groupedItem) {
+      <hr class="cart-item-hr">
+      <div class="cart-item">
+        <img width="180px" [src]="groupedItem.productCard.imageUrl" alt="{{ groupedItem.productCard.title }}" class="product-image"/>
+        <div class="product-info">
+          <h3 class="product-title">{{ groupedItem.productCard.title }}</h3>
+        </div>
+        <div class="quantity-controls">
+          <button mat-mini-button color="primary" (click)="increase(groupedItem)">+</button>
+          <span>{{ groupedItem.quantity }}</span>
+          <button mat-mini-button color="primary" (click)="decrease(groupedItem)">-</button>
+        </div>
+        <div class="product-price">
+          <p>{{ groupedItem.productCard.priceCurrent }} ₴</p>
+        </div>
+        <div class="product-delete">
+          <mat-icon (click)="deleteGroupitem(groupedItem)">delete</mat-icon>
+        </div>
+      </div>
+    }
+  </div>
+  <div class="cart-items-info">
+    <hr class="cart-item-hr">
+    <div class="cart-items-info-block">
+      <span class="cart-items-info-title">Сума до оплати за товар</span>
+      <span>{{total}} грн</span>
+    </div>
+    <hr class="cart-item-hr">
+    <p>Остаточна вартість замовлення залежатиме від вартості доставки.</p>
+  </div>
+</div>
+
+
 
 <form>
   @if (areas$ | async; as areas) {

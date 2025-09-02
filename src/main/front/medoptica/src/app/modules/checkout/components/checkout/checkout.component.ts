@@ -12,6 +12,8 @@ import {City} from '../../../../models/city';
 import {MatAutocomplete, MatAutocompleteTrigger} from '@angular/material/autocomplete';
 import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {Warehouse} from '../../../../models/warehouse';
+import {CartItem} from '../../../../pop-up/shopping-cart/shopping-cart.component';
+import {MatIcon} from '@angular/material/icon';
 
 @Component({
   selector: 'checkout-page',
@@ -24,7 +26,8 @@ import {Warehouse} from '../../../../models/warehouse';
     MatAutocomplete,
     MatAutocompleteTrigger,
     ReactiveFormsModule,
-    MatInput
+    MatInput,
+    MatIcon
   ],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',
@@ -39,9 +42,12 @@ export class CheckoutComponent implements OnInit {
   warehouse$: Observable<Warehouse[]> | undefined;
   filteredCities$: Observable<City[]> | undefined;
   allCities: City[] = [];
-
+  public total: number = 0;
+  public groupedItems: CartItem[] = [];
 
   ngOnInit() {
+    this.groupItems();
+    this.calculateTotal();
     this.areas$ = this.novaPoshtaService.getAreas(new NovaPoshtaRequest("139ef94b20fa0b2f436ed7c8fed46363", "AddressGeneral", "getSettlementAreas", null));
   }
 
@@ -79,5 +85,44 @@ export class CheckoutComponent implements OnInit {
       "getWarehouses",
       new MethodProperties(null, null, null, null, refCity)
     ))
+  }
+
+  private groupItems(): void {
+    const map = new Map<string, CartItem>();
+
+    this.medopticaStore.selectedLikeProductCards.forEach(item => {
+      const key = item.title; // уникальный идентификатор товара
+      if (map.has(key)) {
+        map.get(key)!.quantity += 1;
+      } else {
+        map.set(key, { productCard: item, quantity: 1 });
+      }
+    });
+
+    this.groupedItems = Array.from(map.values());
+  }
+
+  public increase(item: CartItem): void {
+    item.quantity += 1;
+    this.calculateTotal();
+  }
+
+  public decrease(item: CartItem): void {
+    if (item.quantity > 1) {
+      item.quantity -= 1;
+    } else {
+      this.groupedItems = this.groupedItems.filter(i => i !== item);
+    }
+    this.calculateTotal();
+  }
+
+  public deleteGroupitem(item: CartItem): void {
+    this.groupedItems = this.groupedItems.filter(i => i !== item);
+    this.calculateTotal();
+  }
+
+  private calculateTotal(): void {
+    this.total = this.groupedItems
+      .reduce((sum, i) => sum + parseFloat(i.productCard.priceCurrent) * i.quantity, 0);
   }
 }
