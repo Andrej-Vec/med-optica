@@ -14,6 +14,7 @@ import {FormControl, ReactiveFormsModule} from '@angular/forms';
 import {Warehouse} from '../../../../models/warehouse';
 import {CartItem} from '../../../../pop-up/shopping-cart/shopping-cart.component';
 import {MatIcon} from '@angular/material/icon';
+import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
 
 @Component({
   selector: 'checkout-page',
@@ -27,7 +28,9 @@ import {MatIcon} from '@angular/material/icon';
     MatAutocompleteTrigger,
     ReactiveFormsModule,
     MatInput,
-    MatIcon
+    MatIcon,
+    MatRadioGroup,
+    MatRadioButton
   ],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',

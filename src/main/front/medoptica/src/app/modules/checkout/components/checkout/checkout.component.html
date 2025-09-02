@@ -34,40 +34,71 @@
 
 
 
-<form>
-  @if (areas$ | async; as areas) {
-    <mat-form-field>
-      <mat-label>areas</mat-label>
-      <mat-select (selectionChange)="onAreaChange($event.value)">
-        @for (area of areas; track area.Ref) {
-          <mat-option [value]="area.Ref">{{area.Description}}</mat-option>
-        }
-      </mat-select>
-    </mat-form-field>
-  }
+<form class="order-form">
+  <h2 class="order-form-title">Оформлення замовлення</h2>
+  <div class="order-form-wrapper">
+    <div class="order-form-block">
+      <h3 class="order-form-subtitle">Дані покупця</h3>
+      <div class="order-form-block-wrapper">
+        <mat-form-field>
+          <mat-label>ПІБ</mat-label>
+          <input type="text" matInput placeholder="Введіть ПІБ">
+        </mat-form-field>
 
-  @if (filteredCities$ | async; as cities) {
-    <mat-form-field class="example-full-width">
-      <mat-label>Assignee</mat-label>
-      <input type="text" [formControl]="myControl" matInput [matAutocomplete]="auto">
-      <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-        @for (city of cities; track city.Ref) {
-          <mat-option (click)="getWarehouses(city.Ref)" [value]="city">{{city.Description}}</mat-option>
+        <mat-form-field>
+          <mat-label>Номер телефона</mat-label>
+          <input type="text" matInput placeholder="+380">
+        </mat-form-field>
+      </div>
+    </div>
+    <div class="order-form-block">
+      <h3 class="order-form-subtitle">Доставка</h3>
+      <div class="order-form-block-wrapper">
+        @if (areas$ | async; as areas) {
+          <mat-form-field>
+            <mat-label>Область</mat-label>
+            <mat-select (selectionChange)="onAreaChange($event.value)">
+              @for (area of areas; track area.Ref) {
+                <mat-option [value]="area.Ref">{{area.Description}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
         }
-      </mat-autocomplete>
-    </mat-form-field>
-  }
 
-  @if (warehouse$ | async; as warehouses) {
-    <mat-form-field>
-      <mat-label>warehouse</mat-label>
-      <mat-select>
-        @for (warehouse of warehouses; track warehouse.Ref) {
-          <mat-option [value]="warehouse.Ref">{{warehouse.Description}}</mat-option>
+        @if (filteredCities$ | async; as cities) {
+          <mat-form-field class="example-full-width">
+            <mat-label>Місто</mat-label>
+            <input type="text" [formControl]="myControl" matInput [matAutocomplete]="auto">
+            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+              @for (city of cities; track city.Ref) {
+                <mat-option (click)="getWarehouses(city.Ref)" [value]="city">{{city.Description}}</mat-option>
+              }
+            </mat-autocomplete>
+          </mat-form-field>
         }
-      </mat-select>
-    </mat-form-field>
-  }
+
+        @if (warehouse$ | async; as warehouses) {
+          <mat-form-field>
+            <mat-label>Відділення</mat-label>
+            <mat-select>
+              @for (warehouse of warehouses; track warehouse.Ref) {
+                <mat-option [value]="warehouse.Ref">{{warehouse.Description}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+        }
+      </div>
+    </div>
+    <div class="order-form-block">
+      <h3 class="order-form-subtitle">Оплата</h3>
+      <div class="order-form-block-wrapper">
+        <mat-radio-group class="order-form-radio-group">
+          <mat-radio-button [value]="'Оплата при отриманні'">Оплата при отриманні</mat-radio-button>
+          <mat-radio-button [value]="'Оплатити карткою Visa/MasterCard'">Оплатити карткою Visa/MasterCard</mat-radio-button>
+        </mat-radio-group>
+      </div>
+    </div>
+  </div>
 </form>
 
 
