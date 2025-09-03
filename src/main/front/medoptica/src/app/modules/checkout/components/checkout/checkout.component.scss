@@ -95,3 +95,15 @@
     align-items: flex-start;
   }
 }
+
+.empty-shopping {
+  margin: 0 auto;
+  max-width: 1100px;
+  text-align: center;
+
+  .empty-shopping-title {
+    font-size: 24px;
+    line-height: 30px;
+    margin: 24px 0;
+  }
+}

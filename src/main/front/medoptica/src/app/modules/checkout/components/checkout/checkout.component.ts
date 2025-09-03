@@ -15,6 +15,9 @@ import {Warehouse} from '../../../../models/warehouse';
 import {CartItem} from '../../../../pop-up/shopping-cart/shopping-cart.component';
 import {MatIcon} from '@angular/material/icon';
 import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
+import {MatButton} from "@angular/material/button";
+import {MatDialogClose} from "@angular/material/dialog";
+import {RouterLink} from '@angular/router';
 
 @Component({
   selector: 'checkout-page',
@@ -30,7 +33,10 @@ import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
     MatInput,
     MatIcon,
     MatRadioGroup,
-    MatRadioButton
+    MatRadioButton,
+    MatButton,
+    MatDialogClose,
+    RouterLink
   ],
   templateUrl: './checkout.component.html',
   styleUrl: './checkout.component.scss',

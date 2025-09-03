@@ -1,105 +1,111 @@
-<div class="cart-items">
-  <div class="cart-items-products">
-    @for (groupedItem of groupedItems; track groupedItem) {
+@if (groupedItems.length > 0) {
+  <div class="cart-items">
+    <div class="cart-items-products">
+      @for (groupedItem of groupedItems; track groupedItem) {
+        <hr class="cart-item-hr">
+        <div class="cart-item">
+          <img width="180px" [src]="groupedItem.productCard.imageUrl" alt="{{ groupedItem.productCard.title }}" class="product-image"/>
+          <div class="product-info">
+            <h3 class="product-title">{{ groupedItem.productCard.title }}</h3>
+          </div>
+          <div class="quantity-controls">
+            <button mat-mini-button color="primary" (click)="increase(groupedItem)">+</button>
+            <span>{{ groupedItem.quantity }}</span>
+            <button mat-mini-button color="primary" (click)="decrease(groupedItem)">-</button>
+          </div>
+          <div class="product-price">
+            <p>{{ groupedItem.productCard.priceCurrent }} ₴</p>
+          </div>
+          <div class="product-delete">
+            <mat-icon (click)="deleteGroupitem(groupedItem)">delete</mat-icon>
+          </div>
+        </div>
+      }
+    </div>
+    <div class="cart-items-info">
       <hr class="cart-item-hr">
-      <div class="cart-item">
-        <img width="180px" [src]="groupedItem.productCard.imageUrl" alt="{{ groupedItem.productCard.title }}" class="product-image"/>
-        <div class="product-info">
-          <h3 class="product-title">{{ groupedItem.productCard.title }}</h3>
-        </div>
-        <div class="quantity-controls">
-          <button mat-mini-button color="primary" (click)="increase(groupedItem)">+</button>
-          <span>{{ groupedItem.quantity }}</span>
-          <button mat-mini-button color="primary" (click)="decrease(groupedItem)">-</button>
-        </div>
-        <div class="product-price">
-          <p>{{ groupedItem.productCard.priceCurrent }} ₴</p>
-        </div>
-        <div class="product-delete">
-          <mat-icon (click)="deleteGroupitem(groupedItem)">delete</mat-icon>
-        </div>
+      <div class="cart-items-info-block">
+        <span class="cart-items-info-title">Сума до оплати за товар</span>
+        <span>{{total}} грн</span>
       </div>
-    }
-  </div>
-  <div class="cart-items-info">
-    <hr class="cart-item-hr">
-    <div class="cart-items-info-block">
-      <span class="cart-items-info-title">Сума до оплати за товар</span>
-      <span>{{total}} грн</span>
+      <hr class="cart-item-hr">
+      <p>Остаточна вартість замовлення залежатиме від вартості доставки.</p>
     </div>
-    <hr class="cart-item-hr">
-    <p>Остаточна вартість замовлення залежатиме від вартості доставки.</p>
   </div>
-</div>
 
-
-
-<form class="order-form">
-  <h2 class="order-form-title">Оформлення замовлення</h2>
-  <div class="order-form-wrapper">
-    <div class="order-form-block">
-      <h3 class="order-form-subtitle">Дані покупця</h3>
-      <div class="order-form-block-wrapper">
-        <mat-form-field>
-          <mat-label>ПІБ</mat-label>
-          <input type="text" matInput placeholder="Введіть ПІБ">
-        </mat-form-field>
-
-        <mat-form-field>
-          <mat-label>Номер телефона</mat-label>
-          <input type="text" matInput placeholder="+380">
-        </mat-form-field>
-      </div>
-    </div>
-    <div class="order-form-block">
-      <h3 class="order-form-subtitle">Доставка</h3>
-      <div class="order-form-block-wrapper">
-        @if (areas$ | async; as areas) {
+  <form class="order-form">
+    <h2 class="order-form-title">Оформлення замовлення</h2>
+    <div class="order-form-wrapper">
+      <div class="order-form-block">
+        <h3 class="order-form-subtitle">Дані покупця</h3>
+        <div class="order-form-block-wrapper">
           <mat-form-field>
-            <mat-label>Область</mat-label>
-            <mat-select (selectionChange)="onAreaChange($event.value)">
-              @for (area of areas; track area.Ref) {
-                <mat-option [value]="area.Ref">{{area.Description}}</mat-option>
-              }
-            </mat-select>
+            <mat-label>ПІБ</mat-label>
+            <input type="text" matInput placeholder="Введіть ПІБ">
           </mat-form-field>
-        }
 
-        @if (filteredCities$ | async; as cities) {
-          <mat-form-field class="example-full-width">
-            <mat-label>Місто</mat-label>
-            <input type="text" [formControl]="myControl" matInput [matAutocomplete]="auto">
-            <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
-              @for (city of cities; track city.Ref) {
-                <mat-option (click)="getWarehouses(city.Ref)" [value]="city">{{city.Description}}</mat-option>
-              }
-            </mat-autocomplete>
-          </mat-form-field>
-        }
-
-        @if (warehouse$ | async; as warehouses) {
           <mat-form-field>
-            <mat-label>Відділення</mat-label>
-            <mat-select>
-              @for (warehouse of warehouses; track warehouse.Ref) {
-                <mat-option [value]="warehouse.Ref">{{warehouse.Description}}</mat-option>
-              }
-            </mat-select>
+            <mat-label>Номер телефона</mat-label>
+            <input type="text" matInput placeholder="+380">
           </mat-form-field>
-        }
+        </div>
+      </div>
+      <div class="order-form-block">
+        <h3 class="order-form-subtitle">Доставка</h3>
+        <div class="order-form-block-wrapper">
+          @if (areas$ | async; as areas) {
+            <mat-form-field>
+              <mat-label>Область</mat-label>
+              <mat-select (selectionChange)="onAreaChange($event.value)">
+                @for (area of areas; track area.Ref) {
+                  <mat-option [value]="area.Ref">{{area.Description}}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          }
+
+          @if (filteredCities$ | async; as cities) {
+            <mat-form-field class="example-full-width">
+              <mat-label>Місто</mat-label>
+              <input type="text" [formControl]="myControl" matInput [matAutocomplete]="auto">
+              <mat-autocomplete #auto="matAutocomplete" [displayWith]="displayFn">
+                @for (city of cities; track city.Ref) {
+                  <mat-option (click)="getWarehouses(city.Ref)" [value]="city">{{city.Description}}</mat-option>
+                }
+              </mat-autocomplete>
+            </mat-form-field>
+          }
+
+          @if (warehouse$ | async; as warehouses) {
+            <mat-form-field>
+              <mat-label>Відділення</mat-label>
+              <mat-select>
+                @for (warehouse of warehouses; track warehouse.Ref) {
+                  <mat-option [value]="warehouse.Ref">{{warehouse.Description}}</mat-option>
+                }
+              </mat-select>
+            </mat-form-field>
+          }
+        </div>
+      </div>
+      <div class="order-form-block">
+        <h3 class="order-form-subtitle">Оплата</h3>
+        <div class="order-form-block-wrapper">
+          <mat-radio-group class="order-form-radio-group">
+            <mat-radio-button [value]="'Оплата при отриманні'">Оплата при отриманні</mat-radio-button>
+            <mat-radio-button [value]="'Оплатити карткою Visa/MasterCard'">Оплатити карткою Visa/MasterCard</mat-radio-button>
+          </mat-radio-group>
+        </div>
       </div>
     </div>
-    <div class="order-form-block">
-      <h3 class="order-form-subtitle">Оплата</h3>
-      <div class="order-form-block-wrapper">
-        <mat-radio-group class="order-form-radio-group">
-          <mat-radio-button [value]="'Оплата при отриманні'">Оплата при отриманні</mat-radio-button>
-          <mat-radio-button [value]="'Оплатити карткою Visa/MasterCard'">Оплатити карткою Visa/MasterCard</mat-radio-button>
-        </mat-radio-group>
-      </div>
-    </div>
+  </form>
+} @else {
+  <div class="empty-shopping">
+    <h3 class="empty-shopping-title">У кошику немає товарів</h3>
+    <button routerLink="/" mat-button mat-dialog-close>Перейти в каталог</button>
   </div>
-</form>
+}
+
 
 
 

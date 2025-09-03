@@ -36,7 +36,7 @@
     </div>
     <div class="product-card__footer footer-card">
       <button (click)="addProductToBasket(productCard)" class="footer-card__button_white">Придбати в 1 клік</button>
-      <button (click)="addProductToBasket(productCard)" class="footer-card__button_blue _icon-cart"></button>
+      <button (click)="addProductToBasketWithNotification(productCard)" class="footer-card__button_blue _icon-cart"></button>
     </div>
   </div>
   @if (productCard?.isNew) {
