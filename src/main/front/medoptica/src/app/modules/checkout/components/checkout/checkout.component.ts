@@ -10,7 +10,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MedopticaStore} from '../../../../services/medoptica.store';
 import {City} from '../../../../models/city';
 import {MatAutocomplete, MatAutocompleteTrigger} from '@angular/material/autocomplete';
-import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
+import {FormBuilder, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Warehouse} from '../../../../models/warehouse';
 import {CartItem} from '../../../../pop-up/shopping-cart/shopping-cart.component';
 import {MatIcon} from '@angular/material/icon';
@@ -20,6 +20,7 @@ import {MatDialogClose} from "@angular/material/dialog";
 import {RouterLink} from '@angular/router';
 import {OrderService} from '../../../../shared/services/order.service';
 import {OrderRequest} from '../../../../shared/models/order.request';
+import {ProductCardDto} from '../../../../shared/models/product-card-dto';
 
 @Component({
   selector: 'checkout-page',
@@ -154,7 +155,12 @@ export class CheckoutComponent implements OnInit {
 
   public sendOrderEmail() {
     const {fullName, phone, region, city, branch, paymentMethod} = this.formCheckout.value;
-    this.orderService.placeOrder(new OrderRequest(fullName, phone, region.Description, city.Description, branch.Description, paymentMethod, [])).subscribe()
+
+    const products: ProductCardDto[] = this.groupedItems.map(
+      item => new ProductCardDto(item.productCard.title, Number(item.productCard.priceCurrent), item.quantity)
+    );
+
+    this.orderService.placeOrder(new OrderRequest(fullName, phone, region.Description, city.Description, branch.Description, paymentMethod, products)).subscribe()
   }
 
   compareAreas(a: any, b: any): boolean {
