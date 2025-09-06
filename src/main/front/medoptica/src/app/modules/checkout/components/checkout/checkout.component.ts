@@ -10,7 +10,7 @@ import {MatFormFieldModule} from '@angular/material/form-field';
 import {MedopticaStore} from '../../../../services/medoptica.store';
 import {City} from '../../../../models/city';
 import {MatAutocomplete, MatAutocompleteTrigger} from '@angular/material/autocomplete';
-import {FormControl, ReactiveFormsModule} from '@angular/forms';
+import {FormBuilder, FormControl, FormGroup, ReactiveFormsModule, Validators} from '@angular/forms';
 import {Warehouse} from '../../../../models/warehouse';
 import {CartItem} from '../../../../pop-up/shopping-cart/shopping-cart.component';
 import {MatIcon} from '@angular/material/icon';
@@ -18,6 +18,8 @@ import {MatRadioButton, MatRadioGroup} from '@angular/material/radio';
 import {MatButton} from "@angular/material/button";
 import {MatDialogClose} from "@angular/material/dialog";
 import {RouterLink} from '@angular/router';
+import {OrderService} from '../../../../shared/services/order.service';
+import {OrderRequest} from '../../../../shared/models/order.request';
 
 @Component({
   selector: 'checkout-page',
@@ -43,10 +45,13 @@ import {RouterLink} from '@angular/router';
   standalone: true
 })
 export class CheckoutComponent implements OnInit {
+
   public readonly medopticaStore = inject(MedopticaStore);
+  private readonly fb = inject(FormBuilder);
+  private readonly orderService = inject(OrderService);
   private readonly novaPoshtaService = inject(NovaPoshtaService);
 
-  myControl = new FormControl<string | City>('');
+  formCheckout: FormGroup =  new FormGroup({});
   areas$: Observable<Area[]> | undefined;
   warehouse$: Observable<Warehouse[]> | undefined;
   filteredCities$: Observable<City[]> | undefined;
@@ -55,27 +60,39 @@ export class CheckoutComponent implements OnInit {
   public groupedItems: CartItem[] = [];
 
   ngOnInit() {
+    this.initForm();
     this.groupItems();
     this.calculateTotal();
     this.areas$ = this.novaPoshtaService.getAreas(new NovaPoshtaRequest("139ef94b20fa0b2f436ed7c8fed46363", "AddressGeneral", "getSettlementAreas", null));
+  }
+
+  private initForm(): void {
+    this.formCheckout = this.fb.group({
+      fullName: ['', Validators.required],
+      phone: ['', Validators.required],
+      region: ['', Validators.required],
+      city: ['', Validators.required],
+      branch: ['', Validators.required],
+      paymentMethod: ['', Validators.required],
+    })
   }
 
   displayFn(user: City): string {
     return user && user.Description ? user.Description : '';
   }
 
-  public onAreaChange(selectedRef: string): void {
-    this.myControl.reset();
+  public onAreaChange(selectedRef: any): void {
+    this.formCheckout.get('city')?.reset('');
 
     this.novaPoshtaService.getCities(new NovaPoshtaRequest(
       "139ef94b20fa0b2f436ed7c8fed46363",
       "AddressGeneral",
       "getSettlements",
-      new MethodProperties(selectedRef, "1", "2", "150", null)
+      new MethodProperties(selectedRef.Ref, "1", "2", "150", null)
     )).subscribe(cities => {
       this.allCities = cities;
 
-      this.filteredCities$ = this.myControl.valueChanges.pipe(
+      this.filteredCities$ = this.formCheckout.get('city')!.valueChanges.pipe(
         startWith(''),
         map(value => {
           const filterValue = typeof value === 'string' ? value.toLowerCase() : value?.Description.toLowerCase() ?? '';
@@ -133,5 +150,18 @@ export class CheckoutComponent implements OnInit {
   private calculateTotal(): void {
     this.total = this.groupedItems
       .reduce((sum, i) => sum + parseFloat(i.productCard.priceCurrent) * i.quantity, 0);
+  }
+
+  public sendOrderEmail() {
+    const {fullName, phone, region, city, branch, paymentMethod} = this.formCheckout.value;
+    this.orderService.placeOrder(new OrderRequest(fullName, phone, region.Description, city.Description, branch.Description, paymentMethod, [])).subscribe()
+  }
+
+  compareAreas(a: any, b: any): boolean {
+    return a && b && a.Ref === b.Ref;
+  }
+
+  compareWarehouse(a: any, b: any): boolean {
+    return a && b && a.Ref === b.Ref;
   }
 }
